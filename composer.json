@@ -1,0 +1,21 @@
+{
+  "name": "nblum/silverstripe-flexible-content",
+  "description": "",
+  "type": "silverstripe-module",
+  "homepage": "",
+  "keywords": [
+    "silverstripe",
+    "content"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Nico Blum",
+      "email": "mail@blum-nico.de"
+    }
+  ],
+  "require": {
+    "silverstripe/framework": "^3.1",
+    "silverstripe-australia/gridfieldextensions": "^1.2"
+  }
+}
