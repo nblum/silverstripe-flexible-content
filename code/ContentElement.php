@@ -45,6 +45,15 @@ class ContentElement extends DataObject implements Searchable
         return true;
     }
 
+    /**
+     * @param Member $member
+     * @return boolean
+     */
+    public function canCreate($member = null)
+    {
+        return true;
+    }
+
 
     public function getCMSFields()
     {
