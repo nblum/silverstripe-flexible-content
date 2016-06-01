@@ -125,8 +125,8 @@ class ContentElement extends DataObject implements Searchable
     protected
     function onBeforeWrite()
     {
-        if (!$this->Sort) {
-            $this->Sort = ContentElement::get()->max('Sort') + 1;
+        if ((int)$this->Sort === 0) {
+            $this->Sort = (int)ContentElement::get(get_class($this))->max('Sort') + 1;
         }
 
         if (empty($this->Name)) {
