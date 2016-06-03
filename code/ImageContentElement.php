@@ -33,15 +33,24 @@ class ImageContentElement extends ContentElement
             <strong>Bild anhängen</strong><br />
             Der Beitrag muss gespeicher werden bevor Bilder angehängt werden können
             '));
-
         } else {
             $fields->addFieldToTab('Root.Main', $uploadField);
         }
 
-        $field = new HtmlEditorField('Caption', 'Caption');
-        $field->setRows(15);
+        $field = new TextareaField('Caption', 'Caption');
+        $field->setRows(5);
         $fields->addFieldToTab('Root.Main', $field);
 
         return $fields;
+    }
+
+    public function ContentShort()
+    {
+        return substr(strip_tags($this->getField('Caption')), 0, 30) . '...';
+    }
+
+    public function ImagePreview()
+    {
+        return $this->Image()->SetHeight(40);
     }
 }

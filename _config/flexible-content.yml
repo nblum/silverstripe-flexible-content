@@ -3,3 +3,9 @@ name: gridfieldextensions
 ---
 GridFieldAddNewMultiClass:
   showEmptyString: true
+
+FlexibleContent:
+  availableContentElements:
+    false
+  forbiddenContentElements:
+    - ContentElement
