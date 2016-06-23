@@ -11,6 +11,7 @@ class ContentElement extends DataObject implements PermissionProvider
         'Name' => 'VarChar(100)',
         'Title' => 'VarChar(100)',
         'Sort' => 'Int',
+        'Active' => 'Boolean',
         'Changed' => 'SS_Datetime'
     );
 
@@ -97,12 +98,16 @@ class ContentElement extends DataObject implements PermissionProvider
 
         $fields->addFieldToTab('Root.Main', HeaderField::create('Inhalt'));
 
-        $field = new TextField('Name', 'Name');
-        $field->setDescription('Nicht auf der Webseite sichtbar');
+        $field = new CheckboxField('Active', 'Aktiv');
+        $field->setDescription('Abschnitt anzeigen');
         $fields->addFieldToTab('Root.Main', $field);
 
         $field = new TextField('Title', 'Title');
         $field->setDescription('Überschrift des Abschnitts');
+        $fields->addFieldToTab('Root.Main', $field);
+
+        $field = new TextField('Name', 'Name');
+        $field->setDescription('Nicht auf der Webseite sichtbar');
         $fields->addFieldToTab('Root.Main', $field);
 
         return $fields;

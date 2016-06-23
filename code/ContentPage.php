@@ -47,6 +47,8 @@ class ContentPage extends Page implements PermissionProvider
 
     public function getCMSFields()
     {
+        Requirements::javascript(FLEXIBLE_CONTENT_PLUGIN_PATH . '/javascript/Admin.js');
+
         $fields = parent::getCMSFields();
 
         $fields->removeFieldFromTab('Root.Main', 'Content');
@@ -70,6 +72,7 @@ class ContentPage extends Page implements PermissionProvider
             $config->addComponent(new GridFieldOrderableRows());
         }
         $config->addComponent(new GridFieldDeleteAction());
+        $config->addComponent(new GridFieldActiveAction());
 
         $columns->setDisplayFields([
             'Name' => 'Name',
@@ -147,6 +150,8 @@ class ContentPage_Controller extends Page_Controller
      */
     public function Elements()
     {
-        return $this->ContentElements()->sort('Sort ASC');
+        return $this->ContentElements()->addFilter(array(
+            'Active' => '1'
+        ))->sort('Sort ASC');
     }
 }
