@@ -120,7 +120,12 @@ class ContentElement extends DataObject implements PermissionProvider
     {
         //set the initial sort order
         if ((int)$this->Sort === 0) {
-            $this->Sort = (int)ContentElement::get(get_class($this))->max('Sort') + 1;
+            $maxSort = (int)ContentElement::get(get_class($this))
+                ->addFilter([
+                    'PageID' => $this->Parent()->getField('ID')
+                ])
+                ->max('Sort');
+            $this->Sort = $maxSort + 1;
         }
 
         //set name to title if empty
