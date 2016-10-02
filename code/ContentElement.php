@@ -122,7 +122,7 @@ class ContentElement extends DataObject implements PermissionProvider
         if ((int)$this->Sort === 0) {
             $maxSort = (int)ContentElement::get(get_class($this))
                 ->addFilter([
-                    'PageID' => $this->Parent()->getField('ID')
+                    'ID' => $this->Parent()->getField('ID')
                 ])
                 ->max('Sort');
             $this->Sort = $maxSort + 1;
