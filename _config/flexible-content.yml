@@ -1,6 +1,10 @@
 ---
 name: gridfieldextensions
 ---
+#DataObject:
+#  extensions:
+#    - ContentElementDataObject
+
 GridFieldAddNewMultiClass:
   showEmptyString: true
 

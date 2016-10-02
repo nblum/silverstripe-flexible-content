@@ -1,0 +1,75 @@
+
+.flexible-content-grid {
+    min-height: 200px;
+}
+
+.cms .ss-ui-button.flexible-content-btn,
+.cms .ss-ui-button.flexible-content-btn.ui-state-hover {
+    background-repeat: no-repeat;
+    background-position: center center;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    position: relative;
+    top: 6px;
+}
+
+.cms .ss-ui-button.flexible-content-btn:active,
+.cms .ss-ui-button.flexible-content-btn:focus {
+    outline: none;
+    border: none;
+    box-shadow: none;
+}
+
+.cms .ss-ui-button.flexible-content-button-copy {
+    background-image: url(../images/copy.png) !important;
+}
+
+.cms .ss-ui-button.flexible-content-button-active {
+    background-image: url(../images/active.png) !important;
+    width: 30px !important;
+}
+
+.cms .ss-ui-button.flexible-content-button-inactive {
+    background-image: url(../images/inactive.png) !important;
+    width: 30px !important;
+}
+
+.cms .col-PublishState {
+    position: relative;
+    width: 20px !important;
+}
+
+.cms .publish-state {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.cms .publish-state:after {
+    content: '';
+    background-repeat: no-repeat;
+    background-position: center center;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -8px;
+    margin-left: -8px;
+}
+
+.cms .publish-state.published:after {
+    background-image: url(../images/published.png);
+}
+
+.cms .publish-state.unpublished:after {
+    background-image: url(../images/unpublished.png);
+}
+
+.cms .publish-state.published-old:after {
+    background-image: url(../images/published-old.png);
+}
