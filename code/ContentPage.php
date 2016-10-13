@@ -1,12 +1,11 @@
 <?php
 
-class ContentPage extends Page implements PermissionProvider
+
+class ContentPage extends \Page implements \PermissionProvider
 {
     const CONFIG = 'FlexibleContent';
 
-    private static $singular_name = 'Inhalts Seite';
-
-    static $has_many = array(
+    public static $has_many = array(
         'ContentElements' => 'ContentElement'
     );
 
@@ -14,40 +13,61 @@ class ContentPage extends Page implements PermissionProvider
     {
         return array(
             'FLEXIBLE_CONTENT_SORT' => array(
-                'category' => 'Flexible Content',
-                'name' => 'Can change the order of flexible content entries'
+                'category' => _t('FlexibleContent.permission.category'),
+                'name' => _t('ContentPage.permission.sort.name'),
             )
         );
     }
 
-    public function getCMSActions()
+    public function publish($fromStage, $toStage, $createNewVersion = false)
     {
-        if (
-            !Permission::checkMember(Member::currentUser(), 'FLEXIBLE_CONTENT_CREATE')
-            && !Permission::checkMember(Member::currentUser(), 'FLEXIBLE_CONTENT_EDIT')
-            && !Permission::checkMember(Member::currentUser(), 'FLEXIBLE_CONTENT_DELETE')
-            && !Permission::checkMember(Member::currentUser(), 'FLEXIBLE_CONTENT_SORT')
-        ) {
-            return $actions = new FieldList();
+        parent::publish($fromStage, $toStage, $createNewVersion);
+
+        //publish all children
+        $contentElements = $this->ContentElements();
+        /* @var ContentElement $contentElement */
+        foreach ($contentElements as $contentElement) {
+            $contentElement->doPublish();
+        }
+    }
+
+    public function doUnpublish()
+    {
+        $result = parent::doUnpublish();
+
+        if (!$result) {
+            return false;
         }
 
-        $majorActions = CompositeField::create()->setName('MajorActions')->setTag('fieldset')->addExtraClass('ss-ui-buttonset');
+        //publish all children
+        $contentElements = $this->ContentElements();
+        /* @var ContentElement $contentElement */
+        foreach ($contentElements as $contentElement) {
+            \Heyday\VersionedDataObjects\VersionedReadingMode::setLiveReadingMode();
+            $clone = clone $contentElement;
+            $clone->delete();
+            \Heyday\VersionedDataObjects\VersionedReadingMode::restoreOriginalReadingMode();
+        }
 
-        $majorActions->push(
-            $publish = FormAction::create('publish', _t('SiteTree.BUTTONPUBLISHE', 'Publish'))
-                ->setAttribute('data-icon', 'accept')
-                ->setAttribute('data-icon-alternate', 'disk')
-        );
+        return $result;
+    }
 
-        $actions = new FieldList(array($majorActions));
-        $this->extend('updateCMSActions', $actions);
+    public function delete()
+    {
+        parent::delete();
 
-        return $actions;
+        //publish all children
+        $contentElements = $this->ContentElements();
+        /* @var ContentElement $contentElement */
+        foreach ($contentElements as $contentElement) {
+            $contentElement->delete();
+        }
     }
 
     public function getCMSFields()
     {
-        Requirements::javascript(FLEXIBLE_CONTENT_PLUGIN_PATH . '/javascript/Admin.js');
+        \Requirements::javascript(FLEXIBLE_CONTENT_PLUGIN_PATH . '/javascript/admin.js');
+        \Requirements::css(FLEXIBLE_CONTENT_PLUGIN_PATH . '/css/admin.css');
 
         $fields = parent::getCMSFields();
 
@@ -55,32 +75,44 @@ class ContentPage extends Page implements PermissionProvider
         $fields->removeFieldFromTab('Root.Main', 'Metadata');
 
 
-        $fields->addFieldToTab('Root.Main', new HeaderField('Seiten Inhalt'));
+        $fields->addFieldToTab('Root.Main', new \HeaderField(_t('ContentPage.header')));
 
-        $elementSelector = new GridFieldAddNewMultiClass();
+        $elementSelector = new \GridFieldAddNewMultiClass();
         $elementSelector->setClasses($this->getAvailableClasses());
 
-        $config = GridFieldConfig::create();
-        $config->addComponent(new GridFieldButtonRow('before'));
-        if (Permission::checkMember(Member::currentUser(), 'FLEXIBLE_CONTENT_EDIT')) {
-            $config->addComponent(new GridFieldEditButton());
+        $config = \GridFieldConfig::create();
+        $config->addComponent(new \GridFieldButtonRow('before'));
+        if (\Permission::checkMember(\Member::currentUser(), 'FLEXIBLE_CONTENT_EDIT')) {
+            $config->addComponent(new \GridFieldEditButton());
         }
-        $config->addComponent(new GridFieldDetailForm());
-        $config->addComponent($columns = new GridFieldDataColumns());
+        $config->addComponent(new \Heyday\VersionedDataObjects\VersionedDataObjectDetailsForm());
+        $config->addComponent($columns = new \GridFieldDataColumns());
         $config->addComponent($elementSelector);
-        if (Permission::checkMember(Member::currentUser(), 'FLEXIBLE_CONTENT_SORT')) {
-            $config->addComponent(new GridFieldOrderableRows());
+        if (\Permission::checkMember(\Member::currentUser(), 'FLEXIBLE_CONTENT_SORT')) {
+            $config->addComponent(new \GridFieldOrderableRows());
         }
-        $config->addComponent(new GridFieldDeleteAction());
-        $config->addComponent(new GridFieldActiveAction());
+        $config->addComponent(new \GridFieldDeleteAction());
+        $config->addComponent(new \Nblum\FlexibleContent\GridFieldActiveAction());
+        if (class_exists('GridFieldCopyToSessionButton')) {
+            $config->addComponent(new \Nblum\FlexibleContent\GridFieldCopyToSessionButton());
+            $config->addComponent(new \Nblum\FlexibleContent\GridFieldPasteSessionButton());
+        }
 
         $columns->setDisplayFields([
             'Name' => 'Name',
-            'ClassName' => 'ClassName',
+            'Preview' => 'Preview',
+            'getSingularName' => 'Type',
             'LastChange' => 'Changed',
-            'ContentShort' => 'Description',
-            'ImagePreview' => 'Image'
+            'PublishState' => 'PublishState'
         ]);
+
+        //convert Publish state to raw html output
+        $dataColumns = $config->getComponentByType('GridFieldDataColumns');
+        $dataColumns->setFieldCasting([
+            'Preview' => 'HTMLText->RAW',
+            'PublishState' => 'HTMLText->RAW'
+        ]);
+
         $columns->setFieldFormatting([
             'ClassName' => function ($name) {
                 if (!class_exists($name)) {
@@ -95,12 +127,14 @@ class ContentPage extends Page implements PermissionProvider
         ]);
 
         $config->extend('updateConfig');
-        $grid = new GridField(
+        $grid = new \GridField(
             'ContentElement',
             'ContentElements',
             $this->ContentElements(),
             $config
         );
+
+        $grid->addExtraClass('flexible-content-grid');
 
         $fields->addFieldToTab('Root.Main', $grid);
         return $fields;
@@ -111,10 +145,10 @@ class ContentPage extends Page implements PermissionProvider
      */
     protected function getAvailableClasses()
     {
-        $allowedClasses = Config::inst()->get(self::CONFIG, 'availableContentElements');
+        $allowedClasses = \Config::inst()->get(self::CONFIG, 'availableContentElements');
         if (is_array($allowedClasses)) {
             foreach ($allowedClasses as $key => $class) {
-                if (!ClassInfo::exists($class)) {
+                if (!\ClassInfo::exists($class)) {
                     unset($allowedClasses[$key]);
                 }
             }
@@ -122,8 +156,9 @@ class ContentPage extends Page implements PermissionProvider
             return $allowedClasses;
         }
 
-        $forbiddenClasses = Config::inst()->get(self::CONFIG, 'forbiddenContentElements');
-        $classes = array_values(ClassInfo::subclassesFor('ContentElement'));
+        $forbiddenClasses = \Config::inst()->get(self::CONFIG, 'forbiddenContentElements');
+        $classes = array_values(\ClassInfo::subclassesFor('ContentElement'));
+
         if (is_array($forbiddenClasses)) {
             foreach ($forbiddenClasses as $class) {
                 $key = array_search($class, $classes);
@@ -132,17 +167,28 @@ class ContentPage extends Page implements PermissionProvider
                 }
             }
         }
-        return $classes;
+        return is_array($classes) ? $classes : [];
     }
 }
 
 
-class ContentPage_Controller extends Page_Controller
+class ContentPage_Controller extends \Page_Controller
 {
 
     private static $allowed_actions = array(
-        'ContentElements'
+        'Elements',
+        'FlexibleContent',
+        'Render'
     );
+
+    /**
+     * renders content with flexibleContent template
+     * @return HTMLText
+     */
+    public function FlexibleContent()
+    {
+        return $this->renderWith('FlexibleContent', $this->Elements());
+    }
 
     /**
      * creates List of all rows with content
@@ -150,8 +196,22 @@ class ContentPage_Controller extends Page_Controller
      */
     public function Elements()
     {
-        return $this->ContentElements()->addFilter(array(
+        $defaultStage = \Nblum\FlexibleContent\FlexibleContentVersionedDataObject::getDefaultStage();
+        if (isset($_GET['stage']) && $defaultStage == $_GET['stage'] && \Permission::check('CMS_ACCESS')) {
+            $stage = $defaultStage;
+        } else {
+            $stage = \Nblum\FlexibleContent\FlexibleContentVersionedDataObject::get_live_stage();
+        }
+
+        $results = \Nblum\FlexibleContent\FlexibleContentVersionedDataObject::get_by_stage(
+            \ContentElement::class,
+            $stage
+            , [
             'Active' => '1'
-        ))->sort('Sort ASC');
+        ], [
+            'Sort' => 'ASC'
+        ]);
+
+        return $results;
     }
 }

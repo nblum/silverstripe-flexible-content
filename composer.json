@@ -15,7 +15,11 @@
     }
   ],
   "require": {
-    "silverstripe/framework": "3.*",
-    "silverstripe-australia/gridfieldextensions": "1.*"
+    "silverstripe/framework": "^3.0",
+    "silverstripe-australia/gridfieldextensions": "^1.0",
+    "heyday/silverstripe-versioneddataobjects": "^2.0"
+  },
+  "suggest": {
+    "nblum/silverstripe-flexible-content-elements": "Provides a basic set of content elements"
   }
 }

@@ -1,0 +1,48 @@
+de:
+  FlexibleContent:
+    permission:
+        category: Inhaltsseiten
+  ContentPage:
+    SINGULARNAME: Inhaltsseite
+    PLURALNAME: Inhaltsseiten
+    header: Inhaltselemente
+    permission:
+      sort:
+        name: Kann die Reihenfolge von Inhaltselementen ändern
+  ImageContentElement:
+    SINGULARNAME: Bild
+    PLURALNAME: Bilder
+  TextContentElement:
+    SINGULARNAME: Text
+    PLURALNAME: Texte
+  ContentElement:
+    today: Heute
+    yesterday: Gestern
+    state:
+      unpublished: Unveröffentlicht
+      published: Veröffentlicht Version {current}
+      publishedOld: Veröffentlichte Version: {current} (Geändert: {time})
+    missingTemplate: Template {template} wurde nicht gefunden
+    permission:
+      create:
+        name: Kann Inhaltselemente anlegen
+      edit:
+        name: Kann Inhaltselemente bearbeiten
+      delete:
+        name: Kann Inhaltselemente löschen
+    header: Inhalts
+    active:
+      name: Aktiv
+      description: Abschnitt anzeigen
+    title:
+      name: Titel
+      description: Überschrift des Abschnitts
+    name:
+      name: Name
+      description: Nicht auf der Webseite sichtbar
+    content:
+      name: Abschnitt Inhalt
+    image:
+      name: Bild
+      caption: Legende
+

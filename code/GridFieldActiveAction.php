@@ -1,4 +1,7 @@
 <?php
+
+namespace Nblum\FlexibleContent;
+
 /**
  * This class is a {@link GridField} component that adds a delete action for
  * objects.
@@ -18,7 +21,7 @@
  * @package forms
  * @subpackage fields-gridfield
  */
-class GridFieldActiveAction implements GridField_ColumnProvider, GridField_ActionProvider {
+class GridFieldActiveAction implements \GridField_ColumnProvider , \GridField_ActionProvider {
 
     /**
      *
@@ -93,13 +96,12 @@ class GridFieldActiveAction implements GridField_ColumnProvider, GridField_Actio
      */
     public function getColumnContent($gridField, $record, $columnName) {
 
-        $buttonIcon = $record->getField('Active') ? 'accept' : 'accept_disabled';
+        $active = $record->getField('Active') ? 'active' : 'inactive';
 
-        $field = GridField_FormAction::create($gridField,  'ToggleActiveRecord'.$record->ID, false, "toggle-active",
+        $field = \GridField_FormAction::create($gridField,  'ToggleActiveRecord'.$record->ID, false, "toggle-active",
             array('RecordID' => $record->ID))
-            ->addExtraClass('gridfield-button-toggle-active')
+            ->addExtraClass('flexible-content-btn flexible-content-button-' . $active)
             ->setAttribute('title', _t('GridAction.Active', "Active"))
-            ->setAttribute('data-icon', $buttonIcon)
             ->setDescription(_t('GridAction.TOGGLE_ACTIVE_DESCRIPTION','Toggle Active'));
         return $field->Field();
     }
@@ -107,13 +109,13 @@ class GridFieldActiveAction implements GridField_ColumnProvider, GridField_Actio
     /**
      * Handle the actions and apply any changes to the GridField
      *
-     * @param GridField $gridField
+     * @param \GridField $gridField
      * @param string $actionName
      * @param mixed $arguments
      * @param array $data - form data
      * @return void
      */
-    public function handleAction(GridField $gridField, $actionName, $arguments, $data) {
+    public function handleAction(\GridField $gridField, $actionName, $arguments, $data) {
         if($actionName == 'toggle-active') {
             $item = $gridField->getList()->byID($arguments['RecordID']);
             if(!$item) {
