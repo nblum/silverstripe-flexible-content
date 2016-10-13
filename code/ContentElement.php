@@ -274,8 +274,6 @@ class ContentElement extends \DataObject implements \PermissionProvider
      */
     public function forTemplate()
     {
-        var_dump($this->getMaxSort());
-        die();
         $template = $this->getClassName();
 
         if (\SSViewer::hasTemplate($template)) {
