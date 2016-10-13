@@ -57,7 +57,7 @@ Create a class which extends the ContentElement class or any other existing cont
 ```php
 <?php
 
-class MyTextContentElement extends Nblum\FlexibleContent\TextContentElement
+class MyTextContentElement extends \TextContentElement
 {
 
     private static $db = array(
@@ -84,3 +84,6 @@ And provide a include template file with the same name
     </div>
 ```
 
+For more examples have a look at the
+[elements-package](https://github.com/nblum/silverstripe-flexible-content-elements)
+ 
