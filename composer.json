@@ -1,6 +1,6 @@
 {
   "name": "nblum/silverstripe-flexible-content",
-  "description": "",
+  "description": "Pages based on data objects for better content structure",
   "type": "silverstripe-module",
   "homepage": "",
   "keywords": [
