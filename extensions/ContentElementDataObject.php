@@ -59,7 +59,7 @@ class ContentElementDataObject extends DataExtension
 
     public function updateCMSActions(FieldList $actions) {
 
-        $actions->push( FormAction::create(
+        $actions->push(FormAction::create(
             'bla', 'bla blub' )
             ->addExtraClass('ss-ui-action-constructive')
             ->setAttribute('data-icon', 'accept')

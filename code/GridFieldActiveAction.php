@@ -21,11 +21,10 @@ namespace Nblum\FlexibleContent;
  * @package forms
  * @subpackage fields-gridfield
  */
-class GridFieldActiveAction implements \GridField_ColumnProvider , \GridField_ActionProvider {
+class GridFieldActiveAction implements \GridField_ColumnProvider, \GridField_ActionProvider {
 
     /**
      *
-     * @param boolean $removeRelation - true if removing the item from the list, but not deleting it
      */
     public function __construct() {
     }
@@ -37,7 +36,7 @@ class GridFieldActiveAction implements \GridField_ColumnProvider , \GridField_Ac
      * @param array $columns
      */
     public function augmentColumns($gridField, &$columns) {
-        if(!in_array('Actions', $columns)) {
+        if (!in_array('Actions', $columns)) {
             $columns[] = 'Actions';
         }
     }
@@ -62,7 +61,7 @@ class GridFieldActiveAction implements \GridField_ColumnProvider , \GridField_Ac
      * @return array
      */
     public function getColumnMetadata($gridField, $columnName) {
-        if($columnName == 'Actions') {
+        if ($columnName == 'Actions') {
             return array('title' => '');
         }
     }
@@ -71,7 +70,7 @@ class GridFieldActiveAction implements \GridField_ColumnProvider , \GridField_Ac
      * Which columns are handled by this component
      *
      * @param GridField $gridField
-     * @return array
+     * @return string[]
      */
     public function getColumnsHandled($gridField) {
         return array('Actions');
@@ -81,7 +80,7 @@ class GridFieldActiveAction implements \GridField_ColumnProvider , \GridField_Ac
      * Which GridField actions are this component handling
      *
      * @param GridField $gridField
-     * @return array
+     * @return string[]
      */
     public function getActions($gridField) {
         return array('toggle-active');
@@ -98,11 +97,11 @@ class GridFieldActiveAction implements \GridField_ColumnProvider , \GridField_Ac
 
         $active = $record->getField('Active') ? 'active' : 'inactive';
 
-        $field = \GridField_FormAction::create($gridField,  'ToggleActiveRecord'.$record->ID, false, "toggle-active",
+        $field = \GridField_FormAction::create($gridField, 'ToggleActiveRecord' . $record->ID, false, "toggle-active",
             array('RecordID' => $record->ID))
             ->addExtraClass('flexible-content-btn flexible-content-button-' . $active)
             ->setAttribute('title', _t('GridAction.Active', "Active"))
-            ->setDescription(_t('GridAction.TOGGLE_ACTIVE_DESCRIPTION','Toggle Active'));
+            ->setDescription(_t('GridAction.TOGGLE_ACTIVE_DESCRIPTION', 'Toggle Active'));
         return $field->Field();
     }
 
@@ -116,13 +115,13 @@ class GridFieldActiveAction implements \GridField_ColumnProvider , \GridField_Ac
      * @return void
      */
     public function handleAction(\GridField $gridField, $actionName, $arguments, $data) {
-        if($actionName == 'toggle-active') {
+        if ($actionName == 'toggle-active') {
             $item = $gridField->getList()->byID($arguments['RecordID']);
-            if(!$item) {
+            if (!$item) {
                 return;
             }
 
-            if($item->getField('Active')) {
+            if ($item->getField('Active')) {
                 $item->setField('Active', 0);
             } else {
                 $item->setField('Active', 1);
