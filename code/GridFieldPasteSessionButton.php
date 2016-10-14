@@ -13,7 +13,7 @@ namespace Nblum\FlexibleContent;
  * @subpackage fields-gridfield
  */
 class GridFieldPasteSessionButton implements
-    \GridField_HTMLProvider ,
+    \GridField_HTMLProvider,
     \GridField_URLHandler  {
 
     private static $allowed_actions = array(
@@ -41,7 +41,7 @@ class GridFieldPasteSessionButton implements
 
     /**
      * @param string $title
-     * @return GridFieldAddExistingSearchButton $this
+     * @return GridFieldPasteSessionButton $this
      */
     public function setTitle($title) {
         $this->title = $title;
@@ -57,7 +57,7 @@ class GridFieldPasteSessionButton implements
 
     /**
      * @param string $fragment
-     * @return GridFieldAddExistingSearchButton $this
+     * @return GridFieldPasteSessionButton $this
      */
     public function setFragment($fragment) {
         $this->fragment = $fragment;
@@ -117,23 +117,23 @@ class GridFieldPasteSessionButton implements
     public function pasteSession(\GridField $grid, \SS_HTTPRequest $request) {
         $copy = $this->getCopy();
 
-        $item = \DataObject::get_by_id(ContentElement::class, (int)$copy['id']);
+        $item = \DataObject::get_by_id(ContentElement::class, (int) $copy['id']);
 
         $pageId = (int) $request->postVar('pageId');
-        if($pageId === 0) {
+        if ($pageId === 0) {
             throw new \RuntimeException(
-                _t('GridFieldAction_Copy.PageNotFound', 'Could not determine current page'),0);
+                _t('GridFieldAction_Copy.PageNotFound', 'Could not determine current page'), 0);
         }
 
-        if(!($item instanceof ContentElement)) {
+        if (!($item instanceof ContentElement)) {
             //unset($_SESSION['flexible-content']['copy']);
             throw new \RuntimeException(
-                _t('GridFieldAction_Copy.ItemNotFound', 'No item to copy found'),0);
+                _t('GridFieldAction_Copy.ItemNotFound', 'No item to copy found'), 0);
         }
 
-        if(!$item->canCreate()) {
+        if (!$item->canCreate()) {
             throw new \ValidationException(
-                _t('GridFieldAction_Copy.CreatePermissionsFailure',"No create permissions"),0);
+                _t('GridFieldAction_Copy.CreatePermissionsFailure', "No create permissions"), 0);
         }
 
         /* @var ContentElement $clone */

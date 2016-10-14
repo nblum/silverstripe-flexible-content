@@ -114,7 +114,7 @@ class ContentPage extends \Page implements \PermissionProvider
         ]);
 
         $columns->setFieldFormatting([
-            'ClassName' => function ($name) {
+            'ClassName' => function($name) {
                 if (!class_exists($name)) {
                     return $name;
                 }
@@ -192,7 +192,7 @@ class ContentPage_Controller extends \Page_Controller
 
     /**
      * creates List of all rows with content
-     * @return ArrayList
+     * @return DataList
      */
     public function Elements()
     {

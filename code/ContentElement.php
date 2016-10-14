@@ -133,7 +133,7 @@ class ContentElement extends \DataObject implements \PermissionProvider
             return 0;
         }
 
-        return (int)$results->first()->getField('Sort');
+        return (int) $results->first()->getField('Sort');
     }
 
     /**
@@ -142,7 +142,7 @@ class ContentElement extends \DataObject implements \PermissionProvider
     protected function onBeforeWrite()
     {
         //set the initial sort order
-        if ((int)$this->Sort === 0) {
+        if ((int) $this->Sort === 0) {
             $maxSort = $this->getMaxSort();
             $this->Sort = $maxSort + 1;
         }
@@ -172,7 +172,7 @@ class ContentElement extends \DataObject implements \PermissionProvider
 
     /**
      * returns a readable last change/edit date
-     * @return bool|string
+     * @return string|null
      */
     public function LastChange()
     {
@@ -188,7 +188,7 @@ class ContentElement extends \DataObject implements \PermissionProvider
         $todayTime->setTime(0, 0, 0); // reset time part, to prevent partial comparison
 
         $diff = $today->diff($todayTime);
-        $diffDays = (integer)$diff->format('%R%a'); // Extract days count in interval
+        $diffDays = (integer) $diff->format('%R%a'); // Extract days count in interval
 
         switch ($diffDays) {
             case 0:
