@@ -93,7 +93,7 @@ class ContentPage extends \Page implements \PermissionProvider
         }
         $config->addComponent(new \GridFieldDeleteAction());
         $config->addComponent(new \Nblum\FlexibleContent\GridFieldActiveAction());
-        if (class_exists('GridFieldCopyToSessionButton')) {
+        if (class_exists(\Nblum\FlexibleContent\GridFieldCopyToSessionButton::class)) {
             $config->addComponent(new \Nblum\FlexibleContent\GridFieldCopyToSessionButton());
             $config->addComponent(new \Nblum\FlexibleContent\GridFieldPasteSessionButton());
         }

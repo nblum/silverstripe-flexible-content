@@ -117,7 +117,7 @@ class GridFieldPasteSessionButton implements
     public function pasteSession(\GridField $grid, \SS_HTTPRequest $request) {
         $copy = $this->getCopy();
 
-        $item = \DataObject::get_by_id(ContentElement::class, (int) $copy['id']);
+        $item = \DataObject::get_by_id(\ContentElement::class, (int) $copy['id']);
 
         $pageId = (int) $request->postVar('pageId');
         if ($pageId === 0) {
@@ -125,7 +125,7 @@ class GridFieldPasteSessionButton implements
                 _t('GridFieldAction_Copy.PageNotFound', 'Could not determine current page'), 0);
         }
 
-        if (!($item instanceof ContentElement)) {
+        if (!($item instanceof \ContentElement)) {
             //unset($_SESSION['flexible-content']['copy']);
             throw new \RuntimeException(
                 _t('GridFieldAction_Copy.ItemNotFound', 'No item to copy found'), 0);
