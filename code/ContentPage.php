@@ -196,7 +196,8 @@ class ContentPage_Controller extends \Page_Controller
      */
     public function Elements()
     {
-        $defaultStage = \Nblum\FlexibleContent\FlexibleContentVersionedDataObject::getDefaultStage();
+        $fcvdo = new \Nblum\FlexibleContent\FlexibleContentVersionedDataObject();
+        $defaultStage = $fcvdo->getDefaultStage();
         if (isset($_GET['stage']) && $defaultStage == $_GET['stage'] && \Permission::check('CMS_ACCESS')) {
             $stage = $defaultStage;
         } else {
