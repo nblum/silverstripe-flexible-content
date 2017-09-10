@@ -208,7 +208,8 @@ class ContentPage_Controller extends \Page_Controller
             \ContentElement::class,
             $stage
             , [
-            'Active' => '1'
+            'Active' => '1',
+            'ParentID' => $this->getField('ID')
         ], [
             'Sort' => 'ASC'
         ]);
