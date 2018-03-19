@@ -1,9 +1,6 @@
 ---
-name: gridfieldextensions
+name: flexiblecontent
 ---
-#DataObject:
-#  extensions:
-#    - ContentElementDataObject
 
 GridFieldAddNewMultiClass:
   showEmptyString: true
@@ -12,4 +9,4 @@ FlexibleContent:
   availableContentElements:
     false
   forbiddenContentElements:
-    - ContentElement
+    - Nblum\FlexibleContent\ContentElement

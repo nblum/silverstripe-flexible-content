@@ -19,6 +19,13 @@
     "silverstripe-australia/gridfieldextensions": "^1.0",
     "heyday/silverstripe-versioneddataobjects": "^2.0"
   },
+  "autoload": {
+    "psr-4": {
+      "Nblum\\FlexibleContent\\": "src/"
+    }
+  },
+  "prefer-stable": true,
+  "minimum-stability": "dev",
   "suggest": {
     "nblum/silverstripe-flexible-content-elements": "Provides a basic set of content elements"
   }

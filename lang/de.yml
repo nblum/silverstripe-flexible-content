@@ -1,7 +1,7 @@
 de:
   FlexibleContent:
     permission:
-        category: Inhaltsseiten
+      category: Inhaltsseiten
   ContentPage:
     SINGULARNAME: Inhaltsseite
     PLURALNAME: Inhaltsseiten
@@ -20,8 +20,8 @@ de:
     yesterday: Gestern
     state:
       unpublished: Unveröffentlicht
-      published: Veröffentlicht Version {current}
-      publishedOld: Veröffentlichte Version: {current} (Geändert: {time})
+      published: Aktuell
+      publishedOld: {time}
     missingTemplate: Template {template} wurde nicht gefunden
     permission:
       create:
@@ -45,4 +45,3 @@ de:
     image:
       name: Bild
       caption: Legende
-
