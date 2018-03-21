@@ -3,7 +3,6 @@ declare (strict_types=1);
 
 namespace Nblum\FlexibleContent;
 
-use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\FieldGroup;
 use SilverStripe\Forms\HeaderField;
 use SilverStripe\Forms\HiddenField;
@@ -148,10 +147,10 @@ class ContentElement extends DataObject
         }
 
         if ($latestVersion === $liveVersionNumber) {
-            return _t('ContentElement.state.published');
+            return _t('ContentElement.state.published', 'published');
         }
         if (!$liveVersionNumber) {
-            return _t('ContentElement.state.unpublished');
+            return _t('ContentElement.state.unpublished', 'unpublished');
         }
         if ($liveVersion) {
             return _t(
@@ -164,5 +163,22 @@ class ContentElement extends DataObject
         }
 
         return '---';
+    }
+
+    public function GridPreview(): string
+    {
+        return sprintf(
+            '
+            <div class="grid-preview" style="height:100px;">
+                <div class="name">%1$s</div>
+                <div class="type">&lt;%2$s&gt;</div>
+                <div class="preview">%3$s</div>
+                <div class="publish">%4$s</div>
+            </div>',
+            $this->getField('Name'),
+            $this->Type(),
+            $this->Preview(),
+            $this->PublishState()
+        );
     }
 }

@@ -18,6 +18,7 @@ use SilverStripe\ORM\ArrayList;
 use SilverStripe\ORM\DataList;
 use SilverStripe\ORM\SS_List;
 use SilverStripe\Versioned\VersionedGridFieldItemRequest;
+use SilverStripe\View\Requirements;
 use Symbiote\GridFieldExtensions\GridFieldAddNewMultiClass;
 
 /**
@@ -51,6 +52,9 @@ class ContentPage extends \Page
 
     public function getCMSFields()
     {
+//        Requirements::javascript(FLEXIBLE_CONTENT_PLUGIN_PATH . '/javascript/admin.js');
+        Requirements::css(FLEXIBLE_CONTENT_PLUGIN_PATH . ':css/admin.css');
+
         $fields = parent::getCMSFields();
         $fields->removeFieldFromTab('Root.Main', 'Content');
         $fields->addFieldToTab('Root.FlexibleContent', $this->getGridField());
@@ -79,13 +83,20 @@ class ContentPage extends \Page
         $dataColumns = new GridFieldDataColumns();
 
 
+//        $dataColumns->setDisplayFields([
+//            'Type' => 'Type',
+//            'Name' => 'Name',
+//            'Preview' => 'Preview',
+//            'getSingularName' => 'Type',
+//            'LastChange' => 'Changed',
+//            'PublishState' => 'PublishState'
+//        ]);
+
         $dataColumns->setDisplayFields([
-            'Type' => 'Type',
-            'Name' => 'Name',
-            'Preview' => 'Preview',
-            'getSingularName' => 'Type',
-            'LastChange' => 'Changed',
-            'PublishState' => 'PublishState'
+            'GridPreview' => 'GridPreview'
+        ]);
+        $dataColumns->setFieldCasting([
+            'GridPreview' => 'HTMLText->RAW'
         ]);
 
         $config = GridFieldConfig::create();

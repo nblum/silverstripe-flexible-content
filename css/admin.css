@@ -1,0 +1,63 @@
+.col-GridPreview {
+    position: relative;
+}
+
+.col-GridPreview .grid-preview {
+    overflow: hidden;
+}
+
+.col-GridPreview .grid-preview .preview {
+    position: absolute;
+    top: 55px;
+    bottom: 5px;
+    left: 5px;
+    right: 5px;
+    overflow: hidden;
+    padding: 5px;
+    border: none;
+}
+
+.col-GridPreview .grid-preview .name {
+    position: absolute;
+    top: 16px;
+    left: 105px;
+    font-weight: bolder;
+    font-size: 1.2em;
+}
+
+.col-GridPreview .grid-preview .type {
+    position: absolute;
+    top: 16px;
+    left: 5px;
+    width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    opacity: .8
+}
+
+
+.col-GridPreview .grid-preview .publish {
+    position: absolute;
+    top: 16px;
+    right: 5px;
+    width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    opacity: .8;
+    text-align: right;
+}
+
+.ui-sortable-helper .grid-preview .type,
+.ui-sortable-helper .grid-preview .publish,
+.ui-sortable-helper .grid-preview .preview {
+    display: none;
+}
+
+.ui-sortable-helper .grid-preview .name {
+    top: 50px;
+    left: 5px;
+    right: -90px;
+    bottom: 5px;
+    font-size: 1em;
+    width: auto;
+}

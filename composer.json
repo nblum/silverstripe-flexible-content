@@ -24,6 +24,13 @@
       "Nblum\\FlexibleContent\\": "src/"
     }
   },
+  "extra": {
+    "installer-name": "flexiblecontent",
+    "expose": [
+      "css",
+      "javascript"
+    ]
+  },
   "prefer-stable": true,
   "minimum-stability": "dev",
   "suggest": {

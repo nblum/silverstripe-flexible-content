@@ -21,7 +21,7 @@ de:
     state:
       unpublished: Unveröffentlicht
       published: Aktuell
-      publishedOld: {time}
+      publishedOld: Outdated: {time}
     missingTemplate: Template {template} wurde nicht gefunden
     permission:
       create:
