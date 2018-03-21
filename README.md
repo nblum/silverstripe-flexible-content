@@ -7,16 +7,11 @@ Content pages based on data objects for better content structure
 ## Features
  - Supports draft/publish state
  - Drag n drop reordering
- - Copy & Paste
  - Black/white listing of block types
  
 ### Disregards
  - Same content element on different pages
 
-### Difference to SilverStripe Blocks
-Silverstripe Blocks has more features like block sets, forms ,... But the ui of Flexible-Content
-is more simple and easier to understand and use for non technical users.
- 
 
 ## Installation
 
@@ -31,12 +26,12 @@ For a basic set of content element you may install the
 composer require nblum/silverstripe-flexible-content-elements
 ```
 
- 1. Create a page template ```ContentPage``` in your theme and add
+ 1. Create a page layout template (`templates/Layout`) ```FlexibleContentPage``` in your theme and add
     ```
         $FlexibleContent
     ```
  1. Run ```dev/build?flush=1```
- 1. Change the Page type to "Content Page" of every page you like
+ 1. Change the Page type to "Flexible Content Page" of every page you like
 
 
 ## Configuration
@@ -56,9 +51,15 @@ Create a class which extends the ContentElement class or any other existing cont
 
 ```php
 <?php
+declare (strict_types=1);
 
-class MyTextContentElement extends \TextContentElement
+use Nblum\FlexibleContent\ContentElements\TextContentElement;
+use Nblum\FlexibleContent\IContentElement;
+
+class MyTextContentElement extends TextContentElement implements IContentElement
 {
+
+    private static $singular_name = 'My Text Content Element';
 
     private static $db = array(
         'Splitview' => 'Boolean'
@@ -68,7 +69,7 @@ class MyTextContentElement extends \TextContentElement
     {
         $fields = parent::getCMSFields();
 
-        $field = new CheckboxField('MyCheckbox', 'a checkbox');
+        $field = new \SilverStripe\Forms\CheckboxField('MyCheckbox', 'a checkbox');
         $fields->addFieldToTab('Root.Main', $field);
 
         return $fields;
@@ -76,7 +77,7 @@ class MyTextContentElement extends \TextContentElement
 }
 ```
 
-And provide a include template file with the same name
+And provide a include template file (eg `themes/mytheme/templates/Includes/MyTextContentElement.ss`) with the same name
 
 ```html
     <div <%if $Splitview %> class="splitview" <% end_if %>

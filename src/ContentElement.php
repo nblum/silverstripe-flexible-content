@@ -31,9 +31,7 @@ class ContentElement extends DataObject
     private static $versioned_gridfield_extensions = false;
 
     private static $db = array(
-        'Name' => 'Varchar(100)',
-        'Title' => 'Varchar(100)',
-        'Sort' => 'Int',
+        'Name' => 'Varchar(100)'
     );
 
     private static $has_one = array(
