@@ -1,9 +1,9 @@
 <?php
-declare (strict_types=1);
 
 namespace Nblum\FlexibleContent;
 
 use SilverStripe\Forms\GridField\GridField;
+use SilverStripe\ORM\Connect\DatabaseException;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\SS_List;
 
@@ -23,7 +23,7 @@ class GridFieldOrderableRows extends \Symbiote\GridFieldExtensions\GridFieldOrde
     public function getURLHandlers($grid)
     {
         return array(
-            'POST reorder'    => 'handleReorder',
+            'POST reorder' => 'handleReorder',
             'POST movetopage' => 'handleMoveToPage'
         );
     }
@@ -38,19 +38,24 @@ class GridFieldOrderableRows extends \Symbiote\GridFieldExtensions\GridFieldOrde
     {
         $orderedIDs = explode(',', $page->getField('ElementsOrder'));
 
-        $dataList = ContentElement::get()
-            ->filter('ParentID', $page->getField('ID'));
+        try {
+            $dataList = ContentElement::get()
+                ->filter('ParentID', $page->getField('ID'));
 
-        foreach ($dataList as $item) {
-            if(!in_array($item->getField('ID'), $orderedIDs)) {
-                $orderedIDs[] = $item->getField('ID');
+            foreach ($dataList as $item) {
+                if (!in_array($item->getField('ID'), $orderedIDs)) {
+                    $orderedIDs[] = $item->getField('ID');
+                }
             }
-        }
 
-        $dataList = ContentElement::get()
-            ->filter('ParentID', $page->getField('ID'))
-            ->where('ID IN(' . implode(',',$orderedIDs) . ')')
-            ->sort('field(ID,' . implode(',',$orderedIDs) . ') ASC');
+            $dataList = ContentElement::get()
+                ->filter('ParentID', $page->getField('ID'))
+                ->where('ID IN(' . implode(',', $orderedIDs) . ')')
+                ->sort('field(ID,' . implode(',', $orderedIDs) . ') ASC');
+        } catch (\Exception $e) {
+            return ContentElement::get()
+                ->filter('ParentID', $page->getField('ID'));
+        }
 
         return $dataList;
     }

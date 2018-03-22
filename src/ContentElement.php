@@ -1,5 +1,4 @@
 <?php
-declare (strict_types=1);
 
 namespace Nblum\FlexibleContent;
 
@@ -83,7 +82,7 @@ class ContentElement extends DataObject
     /**
      * @return DBHTMLText
      */
-    public function forTemplate(): DBHTMLText
+    public function forTemplate()
     {
         $template = $this->getClassName();
         if (SSViewer::hasTemplate($template)) {
@@ -101,7 +100,7 @@ class ContentElement extends DataObject
      * returns a readable last change/edit date
      * @return string|null
      */
-    public function LastChange(): string
+    public function LastChange()
     {
         if (!$this->Changed) {
             return '---';
@@ -128,12 +127,12 @@ class ContentElement extends DataObject
         }
     }
 
-    public function Type(): string
+    public function Type()
     {
         return $this->singular_name();
     }
 
-    public function PublishState(): string
+    public function PublishState()
     {
         try {
             $latestVersionObj = Versioned::get_latest_version(self::class, $this->getField('ID'));
@@ -163,7 +162,7 @@ class ContentElement extends DataObject
         return '---';
     }
 
-    public function GridPreview(): string
+    public function GridPreview()
     {
         return sprintf(
             '

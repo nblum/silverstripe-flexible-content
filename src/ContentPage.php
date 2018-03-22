@@ -1,5 +1,4 @@
 <?php
-declare (strict_types=1);
 
 namespace Nblum\FlexibleContent;
 
@@ -13,10 +12,6 @@ use SilverStripe\Forms\GridField\GridFieldDeleteAction;
 use SilverStripe\Forms\GridField\GridFieldDetailForm;
 use SilverStripe\Forms\GridField\GridFieldEditButton;
 use SilverStripe\Forms\GridField\GridFieldFilterHeader;
-use SilverStripe\Forms\TextField;
-use SilverStripe\ORM\ArrayList;
-use SilverStripe\ORM\DataList;
-use SilverStripe\ORM\SS_List;
 use SilverStripe\Versioned\VersionedGridFieldItemRequest;
 use SilverStripe\View\Requirements;
 use Symbiote\GridFieldExtensions\GridFieldAddNewMultiClass;
@@ -53,7 +48,7 @@ class ContentPage extends \Page
     public function getCMSFields()
     {
 //        Requirements::javascript(FLEXIBLE_CONTENT_PLUGIN_PATH . '/javascript/admin.js');
-        Requirements::css(FLEXIBLE_CONTENT_PLUGIN_PATH . ':css/admin.css');
+//        Requirements::css(FLEXIBLE_CONTENT_PLUGIN_PATH . ':css/admin.css');
 
         $fields = parent::getCMSFields();
         $fields->removeFieldFromTab('Root.Main', 'Content');
@@ -73,7 +68,7 @@ class ContentPage extends \Page
     }
 
 
-    protected function getGridField(): GridField
+    protected function getGridField()
     {
         $gridField = new GridField(
             'ContentElement',
@@ -136,7 +131,7 @@ class ContentPage extends \Page
     /**
      * @return array|scalar
      */
-    protected function getAvailableClasses(): array
+    protected function getAvailableClasses()
     {
         $allowedClasses = Config::inst()->get(self::CONFIG_KEY, 'availableContentElements');
         if (is_array($allowedClasses)) {

@@ -1,5 +1,4 @@
 <?php
-declare (strict_types=1);
 
 namespace Nblum\FlexibleContent\ContentElements;
 
@@ -28,7 +27,7 @@ class TextContentElement extends ContentElement implements IContentElement
         return $fields;
     }
 
-    public function Preview(): string
+    public function Preview()
     {
         return substr(strip_tags($this->getField('Content')), 0, 30) . '...';
     }

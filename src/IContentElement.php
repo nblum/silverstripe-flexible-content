@@ -17,23 +17,23 @@ interface IContentElement
      * template for rendering in front end
      * @return DBHTMLText
      */
-    public function forTemplate(): DBHTMLText;
+    public function forTemplate();
 
     /**
      * readable change date(time)
      * @return string
      */
-    public function LastChange(): string;
+    public function LastChange();
 
     /**
      * backend preview of content
      * @return string
      */
-    public function Preview(): string;
+    public function Preview();
 
     /**
      * field type for backend
      * @return string
      */
-    public function Type(): string;
+    public function Type();
 }

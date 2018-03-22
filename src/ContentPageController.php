@@ -1,8 +1,9 @@
 <?php
-declare (strict_types=1);
 
 namespace Nblum\FlexibleContent;
 
+use SilverStripe\ORM\Connect\DatabaseException;
+use SilverStripe\ORM\DataList;
 use SilverStripe\Security\Permission;
 use SilverStripe\Versioned\Versioned;
 
@@ -36,15 +37,19 @@ class ContentPageController extends \PageController
 
         $orderedIDs = explode(',', $this->getField('ElementsOrder'));
 
-        return Versioned::get_by_stage(
-            ContentElement::class,
-            $stage,
-            [
-                'Active' => '1',
-                'ParentID' => $this->getField('ID')
-            ], [
-                'field(ID,' . implode(',',$orderedIDs) . ') ASC'
-            ]
-        );
+       try {
+           return Versioned::get_by_stage(
+               ContentElement::class,
+               $stage,
+               [
+                   'Active' => '1',
+                   'ParentID' => $this->getField('ID')
+               ], [
+                   'field(ID,' . implode(',',$orderedIDs) . ') ASC'
+               ]
+           );
+       } catch (DatabaseException $e) {
+           return new DataList();
+       }
     }
 }
